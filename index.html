@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Broma Clash Royale</title>
+<style>
+  html,body { height:100%; margin:0; font-family:Arial, sans-serif; background:#111; color:#fff; display:flex; align-items:center; justify-content:center; }
+  #container { text-align:center; }
+  #openBtn { padding:12px 20px; font-size:18px; border-radius:8px; border:none; cursor:pointer; }
+  #scare { display:none; position:fixed; inset:0; background:black; align-items:center; justify-content:center; z-index:9999; flex-direction:column; }
+  #scare img { max-width:50%; max-height:50%; object-fit:contain; margin-bottom:20px; }
+  #hint { margin-top:12px; color:#ccc; font-size:14px; }
+</style>
+</head>
+<body>
+  <div id="container">
+    <h1>Abriendo Clash Royale...</h1>
+    <p id="hint">Si la app no se abre automáticamente pulsa este botón.</p>
+    <button id="openBtn">Abrir Clash Royale</button>
+  </div>
+
+  <div id="scare">
+    <img id="scareImg" alt="caca" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Emoji_u1f4a9.svg/1200px-Emoji_u1f4a9.svg.png">
+    <audio id="scareAudio" preload="auto">
+      <source src="https://www.soundjay.com/human/fart-01.mp3" type="audio/mpeg">
+    </audio>
+    <p style="color:white; font-size:20px;">💩 ¡Sorpresa! 💨</p>
+  </div>
+
+<script>
+(function(){
+  const appScheme = 'clashroyale://';
+  const playStore = 'https://play.google.com/store/apps/details?id=com.supercell.clashroyale';
+
+  const openBtn = document.getElementById('openBtn');
+  const scareDiv = document.getElementById('scare');
+  const audio = document.getElementById('scareAudio');
+
+  function triggerScare(){
+    scareDiv.style.display = 'flex';
+    audio.play().catch(()=>{});
+  }
+
+  function tryOpenAppThenScare(){
+    const now = Date.now();
+    // Intento abrir Clash Royale
+    window.location = appScheme;
+    // Si no se abre en 1.2s, mostrar directamente la broma
+    setTimeout(function(){
+      if (Date.now() - now < 1500) {
+        window.location = playStore;
+      }
+      setTimeout(triggerScare, 1200);
+    }, 1000);
+  }
+
+  // Intento automático tras 0.8s
+  setTimeout(tryOpenAppThenScare, 800);
+
+  // Botón para reproducir audio / mostrar broma
+  openBtn.addEventListener('click', function(){
+    tryOpenAppThenScare();
+    setTimeout(triggerScare, 1200);
+  });
+})();
+</script>
+</body>
+</html>
